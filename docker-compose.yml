@@ -1,0 +1,28 @@
+services:
+  mediflow_frontend:
+    build: .
+    image: yedii/mediflow-frontend:latest
+    container_name: mediflow_frontend
+    restart: always
+    ports:
+      - "9003:9003"  # host:container
+    env_file: 
+      - .env.Development
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    develop:
+      watch:
+        - action: sync
+          path: ./app
+          target: /app/app
+        - action: sync
+          path: ./components
+          target: /app/components
+        - action: sync
+          path: ./public
+          target: /app/public
+        - action: rebuild
+          path: ./package.json
